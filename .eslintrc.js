@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['plugin:react/recommended', 'next/core-web-vitals', 'airbnb'],
+  extends: ['plugin:react/recommended', 'next'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -15,8 +15,6 @@ module.exports = {
   plugins: ['react', '@typescript-eslint'],
   rules: {},
   settings: {
-    react: {
-      version: 'latest',
-    },
+    react: 'latest',
   },
-}
+};
