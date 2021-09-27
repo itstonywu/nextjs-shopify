@@ -1,4 +1,4 @@
-export async function storeFront(query: string) {
+export async function storeFront(query: string, variables = {}) {
   const options = {
     method: 'POST',
     headers: {
@@ -6,7 +6,7 @@ export async function storeFront(query: string) {
         process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESSTOKEN,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ query }),
+    body: JSON.stringify({ query, variables }),
   }
 
   const response = await fetch(process.env.NEXT_PUBLIC_SHOPIFY_DOMAIN, options)
