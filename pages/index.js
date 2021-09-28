@@ -7,7 +7,7 @@ export default function Home({ products }) {
   return (
     <>
       <Hero />
-      <ProductList products={products} />
+      <ProductList products={products} label="New Arrivals" />
     </>
   )
 }
