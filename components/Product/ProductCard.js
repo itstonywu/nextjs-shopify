@@ -15,7 +15,7 @@ function ProductCard({ product }) {
           <div className="relative w-full overflow-hidden bg-gray-400 aspect-w-1 aspect-h-1 md:aspect-w-2 md:aspect-h-3">
             <Image
               src={image.transformedSrc}
-              alt={product.altText}
+              alt={image.altText ?? 'Product Image'}
               className="object-cover object-center w-full h-full group-hover:opacity-75"
               layout="fill"
             />

@@ -28,7 +28,7 @@ function ProductForm({ product }) {
           <Image
             src={image.transformedSrc}
             className="object-cover object-center"
-            alt=""
+            alt={image.altText ?? 'Product Image'}
             layout="fill"
           />
         </div>
