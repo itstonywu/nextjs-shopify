@@ -22,10 +22,12 @@ function ProductCard({ product }) {
           </div>
           <div className="flex justify-between m-4">
             <div>
-              <h3 className="mt-1 text-sm text-gray-700 uppercase">{title}</h3>
+              <h3 className="mt-1 text-sm font-bold text-gray-700 uppercase">
+                {title}
+              </h3>
               <p className="mt-1 text-sm text-gray-500 uppercase">{tags[0]}</p>
             </div>
-            <p className="mt-1 text-sm font-bold text-gray-900">{price}</p>
+            <p className="mt-1 text-sm text-gray-700">{price}</p>
           </div>
         </div>
       </a>
