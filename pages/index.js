@@ -1,6 +1,6 @@
 /* This example requires Tailwind CSS v2.0+ */
 import Hero from '@/components/Hero'
-import ProductList from '@/components/ProductList'
+import ProductList from '@/components/Product/ProductList'
 import { getAllProducts } from '@/lib/shopify'
 
 export default function Home({ products }) {
