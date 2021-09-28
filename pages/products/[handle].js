@@ -2,8 +2,11 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { StarIcon } from '@heroicons/react/solid'
 import { RadioGroup } from '@headlessui/react'
-import { storeFront } from '../../lib/shopify'
-import ProductList from '../../components/ProductList'
+import {
+  getSingleProductByHandleAndRelatedProducts,
+  getAllProductHandles,
+} from '@/lib/shopify'
+import ProductList from '@/components/ProductList'
 
 const product = {
   name: 'Basic Tee 6-Pack',
@@ -70,7 +73,6 @@ export default function Example({ product: singleProduct, products }) {
   const [isLoading, setIsLoading] = useState(false)
 
   const variantId = singleProduct.variants.edges[0].node.id
-  console.log(variantId)
 
   async function checkout() {
     setIsLoading(true)
@@ -84,7 +86,7 @@ export default function Example({ product: singleProduct, products }) {
       <nav aria-label="Breadcrumb">
         <ol
           role="list"
-          className="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8"
+          className="flex items-center max-w-2xl px-4 mx-auto space-x-2 sm:px-6 lg:max-w-7xl lg:px-8"
         >
           {product.breadcrumbs.map((breadcrumb) => (
             <li key={breadcrumb.id}>
@@ -122,29 +124,29 @@ export default function Example({ product: singleProduct, products }) {
       </nav>
 
       {/* Image gallery */}
-      <div className="mt-6 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
-        <div className="hidden aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
+      <div className="max-w-2xl mx-auto mt-6 sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
+        <div className="hidden overflow-hidden rounded-lg aspect-w-3 aspect-h-4 lg:block">
           <Image
             src={product.images[0].src}
             alt={product.images[0].alt}
-            className="w-full h-full object-center object-cover"
+            className="object-cover object-center w-full h-full"
             layout="fill"
           />
         </div>
         <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-          <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
+          <div className="overflow-hidden rounded-lg aspect-w-3 aspect-h-2">
             <Image
               src={product.images[1].src}
               alt={product.images[1].alt}
-              className="w-full h-full object-center object-cover"
+              className="object-cover object-center w-full h-full"
               layout="fill"
             />
           </div>
-          <div className="aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
+          <div className="overflow-hidden rounded-lg aspect-w-3 aspect-h-2">
             <Image
               src={product.images[2].src}
               alt={product.images[2].alt}
-              className="w-full h-full object-center object-cover"
+              className="object-cover object-center w-full h-full"
               layout="fill"
             />
           </div>
@@ -153,7 +155,7 @@ export default function Example({ product: singleProduct, products }) {
           <Image
             src={product.images[3].src}
             alt={product.images[3].alt}
-            className="w-full h-full object-center object-cover"
+            className="object-cover object-center w-full h-full"
             layout="fill"
           />
         </div>
@@ -203,7 +205,7 @@ export default function Example({ product: singleProduct, products }) {
           <form className="mt-10">
             {/* Colors */}
             <div>
-              <h3 className="text-sm text-gray-900 font-medium">Color</h3>
+              <h3 className="text-sm font-medium text-gray-900">Color</h3>
 
               <RadioGroup
                 value={selectedColor}
@@ -246,7 +248,7 @@ export default function Example({ product: singleProduct, products }) {
             {/* Sizes */}
             <div className="mt-10">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm text-gray-900 font-medium">Size</h3>
+                <h3 className="text-sm font-medium text-gray-900">Size</h3>
                 <a
                   href="#"
                   className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
@@ -298,7 +300,7 @@ export default function Example({ product: singleProduct, products }) {
                           ) : (
                             <div
                               aria-hidden="true"
-                              className="absolute -inset-px rounded-md border-2 border-gray-200 pointer-events-none"
+                              className="absolute border-2 border-gray-200 rounded-md pointer-events-none -inset-px"
                             >
                               <svg
                                 className="absolute inset-0 w-full h-full text-gray-200 stroke-2"
@@ -327,7 +329,7 @@ export default function Example({ product: singleProduct, products }) {
             <button
               onClick={() => checkout()}
               type="submit"
-              className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="flex items-center justify-center w-full px-8 py-3 mt-10 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Add to bag
             </button>
@@ -348,7 +350,7 @@ export default function Example({ product: singleProduct, products }) {
             <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
 
             <div className="mt-4">
-              <ul role="list" className="pl-4 list-disc text-sm space-y-2">
+              <ul role="list" className="pl-4 space-y-2 text-sm list-disc">
                 {product.highlights.map((highlight) => (
                   <li key={highlight} className="text-gray-400">
                     <span className="text-gray-600">{highlight}</span>
@@ -373,17 +375,7 @@ export default function Example({ product: singleProduct, products }) {
 }
 
 export async function getStaticPaths() {
-  const { data } = await storeFront(gql`
-    {
-      products(first: 6) {
-        edges {
-          node {
-            handle
-          }
-        }
-      }
-    }
-  `)
+  const { data } = await getAllProductHandles()
 
   return {
     paths: data.products.edges.map((product) => ({
@@ -396,7 +388,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const { data } = await storeFront(singleProductQuery, {
+  const { data } = await getSingleProductByHandleAndRelatedProducts({
     handle: params.handle,
   })
 
@@ -407,71 +399,3 @@ export async function getStaticProps({ params }) {
     },
   }
 }
-
-const gql = String.raw
-
-const singleProductQuery = gql`
-  query SingleProduct($handle: String!) {
-    productByHandle(handle: $handle) {
-      title
-      description
-      tags
-      priceRange {
-        minVariantPrice {
-          amount
-        }
-      }
-      images(first: 1) {
-        edges {
-          node {
-            transformedSrc
-            altText
-          }
-        }
-      }
-      variants(first: 6) {
-        edges {
-          node {
-            id
-            title
-          }
-        }
-      }
-    }
-    products(first: 6) {
-      edges {
-        node {
-          id
-          title
-          handle
-          tags
-          priceRange {
-            minVariantPrice {
-              amount
-            }
-          }
-          images(first: 1) {
-            edges {
-              node {
-                transformedSrc
-                altText
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`
-
-const checkoutMutation = gql`
-  mutation CheckoutCreate($variantId: ID!) {
-    checkoutCreate(
-      input: { lineItems: { variantId: $variantId, quantity: 1 } }
-    ) {
-      checkout {
-        webUrl
-      }
-    }
-  }
-`
