@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import Image from 'next/image'
-import { StarIcon } from '@heroicons/react/solid'
 import { RadioGroup } from '@headlessui/react'
 import {
   getSingleProductByHandleAndRelatedProducts,
   getAllProductHandles,
+  checkout,
 } from '@/lib/shopify'
 
 import { formatPrice } from '@/utils/format'
@@ -69,7 +69,6 @@ function classNames(...classes) {
 }
 
 export default function Example({ product: singleProduct, products }) {
-  console.log(singleProduct)
   const [selectedColor, setSelectedColor] = useState(product.colors[0])
   const [selectedSize, setSelectedSize] = useState(product.sizes[2])
   const [isLoading, setIsLoading] = useState(false)
@@ -80,11 +79,12 @@ export default function Example({ product: singleProduct, products }) {
 
   const variantId = singleProduct.variants.edges[0].node.id
 
-  async function checkout() {
+  async function onCheckout() {
     setIsLoading(true)
-    const { data } = await storeFront(checkoutMutation, { variantId })
-    const { webUrl } = data.checkoutCreate.checkout
-    window.location.href = webUrl
+    console.log(variantId)
+    // const { data } = await checkout(variantId)
+    // const { webUrl } = data.checkoutCreate.checkout
+    // window.location.href = webUrl
   }
 
   return (
@@ -196,9 +196,32 @@ export default function Example({ product: singleProduct, products }) {
           </div>
           <button
             type="button"
+            onClick={() => onCheckout()}
             className="flex items-center justify-center px-8 py-3 mt-8 text-base font-medium text-white bg-gray-900 border border-transparent hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-gray-500"
           >
-            <span>Add to bag</span>
+            {isLoading && (
+              <svg
+                className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            )}
+            Buy now
           </button>
         </div>
       </div>
