@@ -25,7 +25,7 @@ function ProductCard({ product }) {
               <h3 className="mt-1 text-sm text-gray-700 uppercase">{title}</h3>
               <p className="mt-1 text-sm text-gray-500 uppercase">{tags[0]}</p>
             </div>
-            <p className="mt-1 text-lg font-normal text-gray-900">{price}</p>
+            <p className="mt-1 text-sm font-bold text-gray-900">{price}</p>
           </div>
         </div>
       </a>
