@@ -9,7 +9,7 @@ function Layout({ children }) {
       <Header>
         <Navigation />
       </Header>
-      <main className="px-4 mx-auto mt-10 max-w-7xl sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+      <main className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 ">
         {children}
       </main>
       <Footer />
