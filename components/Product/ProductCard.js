@@ -11,7 +11,7 @@ function ProductCard({ product }) {
   return (
     <Link href={`/products/${handle}`}>
       <a className="group">
-        <div className="bg-gray-100 border border-gray-500">
+        <div className="bg-gray-100 border">
           <div className="relative w-full overflow-hidden bg-gray-400 aspect-w-1 aspect-h-1 md:aspect-w-2 md:aspect-h-3">
             <Image
               src={image.transformedSrc}
