@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { formatPrice } from '@/utils/format'
+import { formatPrice } from '@/utils/index'
 
 function ProductCard({ product }) {
   const { handle, title, images, tags } = product
