@@ -5,7 +5,6 @@ function classNames(...classes) {
 }
 
 function Button({ onClick, selectedVariant, children }) {
-  console.log(selectedVariant)
   return (
     <button
       type="button"

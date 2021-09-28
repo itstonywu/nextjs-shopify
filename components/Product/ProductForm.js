@@ -1,21 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
-import { formatPrice, getAllVariantOptions } from '@/utils/index'
-import { useState } from 'react'
 import Button from '@/components/Button'
 import Spinner from '@/components/Spinner'
-import ProductOptions from './ProductOptions'
 import { checkout } from '@/lib/shopify'
+import { formatPrice, getAllVariantOptions } from '@/utils/index'
+import ProductOptions from './ProductOptions'
 
 function ProductForm({ product }) {
+  const [selectedVariant, setSelectedVariant] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
   const { title, images, description } = product
   const image = images.edges[0]?.node
-
   const allVariantOptions = getAllVariantOptions(product)
-
-  const [selectedVariant, setSelectedVariant] = useState(null)
 
   async function onCheckout() {
     setIsLoading(true)
@@ -23,8 +20,6 @@ function ProductForm({ product }) {
     const { webUrl } = data.checkoutCreate.checkout
     window.location.href = webUrl
   }
-
-  // const onCheckout = () => console.log('clicked')
 
   return (
     <div className="lg:grid lg:grid-cols-6 lg:gap-x-8 xl:gap-x-16">
