@@ -11,10 +11,10 @@ export default function ProductPage({ productByHandle, products }) {
   )
 
   return (
-    <div>
+    <>
       <ProductForm product={productByHandle} />
       <ProductList products={relatedProducts} label="Related products" />
-    </div>
+    </>
   )
 }
 
