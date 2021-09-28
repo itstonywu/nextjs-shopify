@@ -42,5 +42,6 @@ export async function getStaticProps({ params }) {
       productByHandle,
       products,
     },
+    revalidate: 5,
   }
 }
