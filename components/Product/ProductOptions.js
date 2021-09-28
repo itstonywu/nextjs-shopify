@@ -14,14 +14,14 @@ function ProductOptions({ selectedSize, setSelectedSize, sizes }) {
     >
       <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
       <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-        {sizes.edges.map(({ node }, index) => (
+        {sizes.edges.map(({ node: product }, index) => (
           <RadioGroup.Option
-            key={`${node.id}-${index}`}
-            value={node}
-            disabled={!node.availableForSale}
+            key={`${product.id}-${index}`}
+            value={product}
+            disabled={!product.availableForSale}
             className={({ active }) =>
               classNames(
-                node.availableForSale
+                product.availableForSale
                   ? 'bg-white text-gray-900 cursor-pointer'
                   : 'bg-gray-50 text-gray-200 cursor-not-allowed',
                 active ? 'ring-2 ring-gray-800' : '',
@@ -31,8 +31,8 @@ function ProductOptions({ selectedSize, setSelectedSize, sizes }) {
           >
             {({ active, checked }) => (
               <>
-                <RadioGroup.Label as="p">{node.title}</RadioGroup.Label>
-                {node.availableForSale ? (
+                <RadioGroup.Label as="p">{product.title}</RadioGroup.Label>
+                {product.availableForSale ? (
                   <div
                     className={classNames(
                       active ? 'border' : 'border-2',

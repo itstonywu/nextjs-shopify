@@ -2,15 +2,18 @@ import {
   getSingleProductByHandleAndRelatedProducts,
   getAllProductHandles,
 } from '@/lib/shopify'
-
 import ProductList from '@/components/Product/ProductList'
 import ProductForm from '@/components/Product/ProductForm'
 
 export default function ProductPage({ productByHandle, products }) {
+  const relatedProducts = products.filter(
+    ({ node: product }) => product.handle !== productByHandle.handle
+  )
+
   return (
     <div>
       <ProductForm product={productByHandle} />
-      <ProductList products={products} label="Related products" />
+      <ProductList products={relatedProducts} label="Related products" />
     </div>
   )
 }
@@ -19,9 +22,9 @@ export async function getStaticPaths() {
   const products = await getAllProductHandles()
 
   return {
-    paths: products.map((product) => ({
+    paths: products.map(({ node: product }) => ({
       params: {
-        handle: product.node.handle,
+        handle: product.handle,
       },
     })),
     fallback: false,
