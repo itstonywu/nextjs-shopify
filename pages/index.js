@@ -13,11 +13,9 @@ export default function Home({ products }) {
 }
 
 export async function getStaticProps() {
-  const { data } = await getAllProducts()
+  const products = await getAllProducts()
 
   return {
-    props: {
-      products: data.products,
-    },
+    props: { products },
   }
 }
