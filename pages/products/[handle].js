@@ -11,31 +11,6 @@ import { formatPrice } from '@/utils/format'
 import ProductList from '@/components/ProductList'
 
 const product = {
-  name: 'Basic Tee 6-Pack',
-  price: '$192',
-  href: '#',
-  breadcrumbs: [
-    { id: 1, name: 'Men', href: '#' },
-    { id: 2, name: 'Clothing', href: '#' },
-  ],
-  images: [
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg',
-      alt: 'Two each of gray, white, and black shirts laying flat.',
-    },
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
-      alt: 'Model wearing plain black basic tee.',
-    },
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
-      alt: 'Model wearing plain gray basic tee.',
-    },
-    {
-      src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-      alt: 'Model wearing plain white basic tee.',
-    },
-  ],
   colors: [
     { name: 'White', className: 'bg-white', selectedClass: 'ring-gray-400' },
     { name: 'Gray', className: 'bg-gray-200', selectedClass: 'ring-gray-400' },
@@ -51,18 +26,7 @@ const product = {
     { name: '2XL', inStock: true },
     { name: '3XL', inStock: true },
   ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: [
-    'Hand cut and sewn locally',
-    'Dyed with our proprietary colors',
-    'Pre-washed & pre-shrunk',
-    'Ultra-soft 100% cotton',
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 }
-const reviews = { href: '#', average: 4, totalCount: 117 }
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -78,6 +42,10 @@ export default function Example({ product: singleProduct, products }) {
   const price = formatPrice(singleProduct.priceRange.minVariantPrice.amount)
 
   const variantId = singleProduct.variants.edges[0].node.id
+
+  const relatedProducts = products.edges.filter(
+    ({ node }) => node.handle !== singleProduct.handle
+  )
 
   async function onCheckout() {
     setIsLoading(true)
@@ -225,7 +193,7 @@ export default function Example({ product: singleProduct, products }) {
           </button>
         </div>
       </div>
-      <ProductList products={products} label="Related products" />
+      <ProductList products={relatedProducts} label="Related products" />
     </div>
   )
 }
@@ -244,14 +212,15 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const { data } = await getSingleProductByHandleAndRelatedProducts({
-    handle: params.handle,
-  })
+  const { productByHandle, products } =
+    await getSingleProductByHandleAndRelatedProducts({
+      handle: params.handle,
+    })
 
   return {
     props: {
-      product: data.productByHandle,
-      products: data.products,
+      product: productByHandle,
+      products: products,
     },
   }
 }
