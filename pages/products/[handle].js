@@ -31,7 +31,7 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getServerSideProps({ params }) {
+export async function getStaticProps({ params }) {
   const { productByHandle, products } =
     await getSingleProductByHandleAndRelatedProducts({
       handle: params.handle,
@@ -42,5 +42,6 @@ export async function getServerSideProps({ params }) {
       productByHandle,
       products,
     },
+    revalidate: 10,
   }
 }
