@@ -22,8 +22,8 @@ function ProductForm({ product }) {
   }
 
   return (
-    <div className="lg:grid lg:grid-cols-6 lg:gap-x-8 xl:gap-x-16">
-      <div className="lg:col-span-3">
+    <div className="lg:grid lg:grid-cols-7 lg:gap-x-8 xl:gap-x-16">
+      <div className="lg:col-span-4">
         <div className="overflow-hidden bg-gray-100 aspect-w-1 aspect-h-1">
           <Image
             src={image.transformedSrc}
