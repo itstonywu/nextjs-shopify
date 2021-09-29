@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo'
 import {
   getSingleProductByHandleAndRelatedProducts,
   getAllProductHandles,
@@ -12,6 +13,10 @@ export default function ProductPage({ productByHandle, products }) {
 
   return (
     <>
+      <NextSeo
+        title={productByHandle.title ?? 'Product title'}
+        description={productByHandle.description ?? 'Product description'}
+      />
       <ProductForm product={productByHandle} />
       <ProductList products={relatedProducts} label="Related products" />
     </>
